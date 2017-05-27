@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "juniper/ffp-12.1X47-D15.4"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 1024
+    vb.cpus = 2
+    vb.gui = false
+  end
+
+  config.vm.define "vsrx1" do |vsrx1|
+    vsrx1.vm.host_name = "vsrx1"
+    vsrx1.vm.network "private_network",
+                     virtualbox__intnet: "vsrx1 <-> vsrx2"
+  end
+
+  config.vm.define "vsrx2" do |vsrx2|
+    vsrx2.vm.host_name = "vsrx2"
+    vsrx2.vm.network "private_network",
+                     virtualbox__intnet: "vsrx1 <-> vsrx2"
+  end
+
+end

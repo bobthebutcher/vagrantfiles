@@ -1,0 +1,109 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+    config.vm.provider "virtualbox"
+
+    config.vm.define "certs" do |node|
+      node.vm.box = "centos/7"
+    end
+
+    config.vm.define "vmanage" do |node|
+      node.vm.box = "viptela/vmanage"
+      node.vm.box_version = "17.1.0c"
+
+      # Turn off shared folders
+      node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+      # Do not try to insert new SSH key
+      node.ssh.insert_key = false
+
+      # Port forwards
+      node.vm.network "forwarded_port", guest: 443, host: 8888
+
+      # Interfaces
+      node.vm.network "private_network", virtualbox__intnet: "outside", auto_config: false
+
+    end
+
+    config.vm.define "vsmart" do |node|
+      node.vm.box =  "viptela/vsmart"
+      node.vm.box_version = "17.1.0c"
+
+      # Turn off shared folders
+      node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+      # Do not try to insert new SSH key
+      node.ssh.insert_key = false
+
+      # Interfaces
+      node.vm.network "private_network", virtualbox__intnet: "outside", auto_config: false
+    end
+
+    config.vm.define "vbond" do |node|
+      node.vm.box = "viptela/vbond"
+      node.vm.box_version = "17.1.0c"
+
+      # Turn off shared folders
+      node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+      # Do not try to insert new SSH key
+      node.ssh.insert_key = false
+
+      # Interfaces
+      node.vm.network "private_network", virtualbox__intnet: "dummy", auto_config: false
+      node.vm.network "private_network", virtualbox__intnet: "outside", auto_config: false
+
+    end
+
+    config.vm.define "vedge1" do |node|
+      node.vm.box = "viptela/vedge"
+      node.vm.box_version = "17.1.0c-1"
+
+      # Turn off shared folders
+      node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+      # Do not try to insert new SSH key
+      node.ssh.insert_key = false
+
+      # Interfaces
+      node.vm.network "private_network", virtualbox__intnet: "outside", auto_config: false
+
+    end
+
+    config.vm.define "vedge2" do |node|
+      node.vm.box = "viptela/vedge"
+      node.vm.box_version = "17.1.0c-2"
+
+      # Turn off shared folders
+      node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+      # Do not try to insert new SSH key
+      node.ssh.insert_key = false
+
+      # Interfaces
+      node.vm.network "private_network", virtualbox__intnet: "outside", auto_config: false
+
+    end
+
+    config.vm.define "vedge3" do |node|
+      node.vm.box = "viptela/vedge"
+      node.vm.box_version = "17.1.0c-3"
+
+      # Turn off shared folders
+      node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+      # Do not try to insert new SSH key
+      node.ssh.insert_key = false
+
+      # Interfaces
+      node.vm.network "private_network", virtualbox__intnet: "outside", auto_config: false
+
+    end
+
+
+
+    config.vm.provider :dummy
+
+end
